@@ -35,7 +35,7 @@ class ca_handler {
             'admin' => 'Administrative contact:',
             'tech' => 'Technical contact:',
             'domain.sponsor' => 'Registrar:',
-            'domain.nserver' => 'Name servers:',
+            'domain.nserver.' => 'Name Server:',
             'domain.status' => 'Domain status:',
             'domain.created' => 'Creation date:',
             'domain.expires' => 'Expiry date:',
