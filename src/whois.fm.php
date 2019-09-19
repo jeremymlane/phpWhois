@@ -6,16 +6,16 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
+ *
  * @link http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
@@ -35,7 +35,7 @@ class fm_handler {
             'admin' => 'Admin',
             'tech' => 'Technical',
             'billing' => 'Billing',
-            'domain.nserver' => 'Name Servers:',
+            'domain.nserver' => 'Name Server:',
             'domain.created' => 'Created:',
             'domain.expires' => 'Expires:',
             'domain.changed' => 'Modified:',
@@ -67,7 +67,8 @@ class fm_handler {
             $r['regrinfo']['registered'] = 'no';
         }
 
-        $r['regyinfo']['referrer'] = 'http://www.dot.dm';
+        $r['regyinfo']['whois'] = 'whois.dot.fm';
+        $r['regyinfo']['referrer'] = 'http://www.dot.fm';
         $r['regyinfo']['registrar'] = 'dotFM';
         return $r;
     }
