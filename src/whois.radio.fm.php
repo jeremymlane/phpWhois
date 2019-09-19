@@ -22,8 +22,8 @@
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
 
-if (!defined('__FM_HANDLER__'))
-    define('__FM_HANDLER__', 1);
+if (!defined('__RADIO_FM_HANDLER__'))
+    define('__RADIO_FM_HANDLER__', 1);
 
 require_once('whois.parser.php');
 
