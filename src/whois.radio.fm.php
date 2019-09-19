@@ -31,21 +31,21 @@ class radio_fm_handler {
 
     function parse($data, $query) {
         $items = array(
-            'owner' => 'Registrant',
-            'admin' => 'Admin',
-            'tech' => 'Technical',
-            'billing' => 'Billing',
-            'domain.nserver' => 'Name Server:',
-            'domain.created' => 'Created:',
-            'domain.expires' => 'Expires:',
-            'domain.changed' => 'Modified:',
-            'domain.status' => 'Status:',
-            'domain.sponsor' => 'Registrar Name:'
+            'Registrant' => 'owner',
+            'Admin' => 'admin',
+            'Technical' => 'tech',
+            'Billing' => 'billing',
+            'Name Server:' => 'domain.nserver.',
+            'Creation Date:' => 'domain.created',
+            'Registry Expiry Date:' => 'domain.expires',
+            'Updated Date:' => 'domain.changed',
+            'Domain Status:' => 'domain.status',
+            'Registrar:' => 'domain.sponsor'
         );
 
         $r = array();
-        $r['regrinfo'] = get_blocks($data['rawdata'], $items);
 
+        $r['regrinfo'] = generic_parser_b($data['rawdata'], $items);
         $items = array(
             'phone number:' => 'phone',
             'email address:' => 'email',
@@ -55,9 +55,6 @@ class radio_fm_handler {
 
         if (!empty($r['regrinfo']['domain']['created'])) {
             $r['regrinfo'] = get_contacts($r['regrinfo'], $items);
-
-            if (count($r['regrinfo']['billing']['address']) > 4)
-                $r['regrinfo']['billing']['address'] = array_slice($r['regrinfo']['billing']['address'], 0, 4);
 
             $r['regrinfo']['registered'] = 'yes';
             format_dates($r['regrinfo']['domain'], 'dmY');
