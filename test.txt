@@ -1,6 +1,6 @@
 // Country domains
 
-ae		nic.ae
+ae      google.ae nic.ae aeda.ae
 ag		nic.ag
 am		isoc.am
 at		nic.at
@@ -10,10 +10,11 @@ bh		nic.bh
 br		registro.br
 ca		cira.ca
 ch		creart.ch blaueskreuz.ch
+cl      google.cl
 cn		china.cn
 co		nic.co
 cz		nic.cz
-de		4ever.de denic.de google.de nic.de
+de		4ever.de denic.de google.de nic.de humblebundle.de a2ba91bff88c6983f6af010c41236206df64001d.de
 fi		ficora.fi
 fj		usp.ac.fj
 fm		dot.fm
@@ -33,14 +34,15 @@ mx		nic.mx
 nl		domain-registry.nl
 nu		nunames.nu
 nz		dnc.org.nz
+ph      dot.ph cityescape.ph
 pl		nic.pl
 pt		dns.pt
 ru		nic.ru
 sc		nic.sc
 si		arnes.si
 su		news.su
-uk		olsns.co.uk
-us		neustar.us
+uk		olsns.co.uk google.co.uk vibrantdigitalfuture.uk
+us		neustar.us google.us
 ve		nic.ve
 ws		samoanic.ws surf.ws
 co.za		sex.co.za
@@ -59,6 +61,7 @@ directnic	directnic.com
 domainbank	domainbank.com
 domaincontender domaincontender.com
 afternic	buydomains.com
+dev     ostap.dev
 domainpeople	domainpeople.com
 dotster		dotster.com namesdirect.com dotregistrar.com
 dreamhost	dreamhost.com
@@ -94,6 +97,7 @@ schlund		schlund.com
 srsplus		olsns.com
 namevault	namevault.com
 tmagnic     	antiquea.com
+today       modx.today
 tvcorp		www.tv
 wwdomains	wildwestdomains.com
 corporatedomains	cscglobal.com

@@ -21,6 +21,8 @@
 
 namespace phpWhois\Handlers;
 
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
+
 /**
  * UsHandlerTest
  */
@@ -34,7 +36,7 @@ class UsHandlerTest extends HandlerTest
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -62,16 +64,16 @@ class UsHandlerTest extends HandlerTest
         $expected = [
             'domain'     => [
                 'name'    => 'google.us',
-                'changed' => '2017-11-17',
+                'changed' => '2020-03-22',
                 'created' => '2002-04-19',
-                'expires' => '2018-04-18',
+                'expires' => '2021-04-18',
             ],
             'registered' => 'yes',
         ];
 
-        $this->assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
@@ -94,15 +96,15 @@ class UsHandlerTest extends HandlerTest
         $expected = [
             'domain'     => [
                 'name'    => 'neustar.us',
-                'changed' => '2017-06-02',
+                'changed' => '2020-06-02',
                 'created' => '2002-04-18',
-                'expires' => '2018-04-17',
+                'expires' => '2021-04-17',
             ],
             'registered' => 'yes',
         ];
 
-        $this->assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

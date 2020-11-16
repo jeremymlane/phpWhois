@@ -1,3 +1,55 @@
+6.0.0-rc1 - 2020-10-04
+----------------------
+* Enable support for PHPUnit 8 & 9
+* Require PHP >7.2
+
+5.6.4 - 2020-10-03
+------------------
+* Improve support for `.co.uk` domains (TorbenLundsgaard)
+* Improve support for `.ws` domains (sirvulcan)
+
+5.6.3 - 2020-10-03
+------------------
+* Split fixture files the same way WhoisClient splits raw whois data (naitsirch)
+* Rename handler for `.de` domains, add test cases (jsmitty12)
+* Rename and fix handler for `.uk` domains, add test cases (jsmitty12)
+* Update tests for `.us` domains, add test cases (jsmitty12)
+* Rename handler for `.cl` domains, add test cases (jsmitty12)
+* Rename handler for `.edu` domains, add test cases (jsmitty12)
+* Rename handler for `.ae` domains, add test cases (jsmitty12)
+* Rename handler for `.aero` domains, add test cases (jsmitty12)
+* Rename handler for `.ag` domains, add test cases (jsmitty12)
+* Rename handler for `.am` domains, add test cases (jsmitty12)
+* Rename handler for `.app` domains, add test cases (jsmitty12)
+* Rename handler for `.asia` domains, add test cases (jsmitty12)
+* Rename handler for `.nic` domains, add test cases (jsmitty12)
+* Rename handler for `.at` domains, add test cases (jsmitty12)
+* Rename handler for `.au` domains, add test cases (jsmitty12)
+* Rename handler for `.be` domains, add test cases (jsmitty12)
+* Rename handler for `.bh` domains, add test cases (jsmitty12)
+* Rename handler for `.biz` domains, add test cases (jsmitty12)
+* Rename handler for `.br` domains, add test cases (jsmitty12)
+* Fix date parsing in PHP 7.3 (jsmitty12)
+* Add script to generate test fixtures (jsmitty12)
+
+5.6.2 - 2020-05-31
+------------------
+* Fix parsing for `.ca` domains (maxiwheat, jsmitty12)
+* Add support for `.london` domains (adamjimenez, jsmitty12)
+* Add support for `.ph` domains (jsmitty12)
+* Add support for `.dev` domains (jsmitty12)
+* Add support for `.today` domains (jsmitty12)
+
+5.6.1 - 2020-05-30
+------------------
+* Improve date parsing when a standard format is used (jsmitty12)
+
+5.6.0 - 2020-05-11
+------------------
+* Officially support PHP 7.4 (TorbenLundsgaard, jsmitty12)
+* Replace abandoned `mso/idna-convert` dependency
+* Fix _Undefined index_ notice in `.de` handler (naitsirch)
+
 5.5.0 - 2018-11-26
 ------------------
 * Test against PHP 7.3 and PHP 7.4 (nightly)

@@ -21,6 +21,8 @@
 
 namespace phpWhois\Handlers;
 
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
+
 /**
  * OrgHandlerTest
  */
@@ -34,7 +36,7 @@ class OrgHandlerTest extends HandlerTest
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -69,8 +71,41 @@ class OrgHandlerTest extends HandlerTest
             'registered' => 'yes',
         ];
 
-        $this->assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @return void
+     *
+     * @test
+     */
+    public function parseDatesProperly()
+    {
+        $query = 'scottishrecoveryconsortium.org';
+
+        $fixture = $this->loadFixture($query);
+        $data    = [
+            'rawdata'  => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain'     => [
+                'name'    => 'SCOTTISHRECOVERYCONSORTIUM.ORG',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+
+        $this->assertEquals('2020-01-13', $actual['regrinfo']['domain']['changed'], 'Incorrect change date');
+        $this->assertEquals('2012-10-01', $actual['regrinfo']['domain']['created'], 'Incorrect created date');
+        $this->assertEquals('2020-10-01', $actual['regrinfo']['domain']['expires'], 'Incorrect expiration date');
     }
 }

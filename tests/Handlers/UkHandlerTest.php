@@ -16,10 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
 namespace phpWhois\Handlers;
+
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
 
 /**
  * UkHandlerTest
@@ -27,18 +29,18 @@ namespace phpWhois\Handlers;
 class UkHandlerTest extends HandlerTest
 {
     /**
-     * @var \uk_handler $handler
+     * @var UkHandler $handler
      */
     protected $handler;
 
     /**
      * @return void
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new \uk_handler();
+        $this->handler            = new UkHandler();
         $this->handler->deepWhois = false;
     }
 
@@ -62,14 +64,76 @@ class UkHandlerTest extends HandlerTest
         $expected = [
             'domain'     => [
                 // 'name'    => 'vibrantdigitalfuture.uk',
-                'changed' => '2017-07-28',
+                'changed' => '2019-10-30',
                 'created' => '2016-07-27',
-                'expires' => '2018-07-27',
+                // 'expires' => '2018-07-27',
             ],
             'registered' => 'yes',
         ];
 
-        $this->assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @return void
+     *
+     * @test
+     */
+    public function parseGoogleDotCoDotUk()
+    {
+        $query = 'google.co.uk';
+
+        $fixture = $this->loadFixture($query);
+        $data    = [
+            "rawdata"  => $fixture,
+            "regyinfo" => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain'     => [
+                // 'name'    => 'google.co.uk',
+                'changed' => '2020-01-13',
+                'created' => '1999-02-14',
+                'expires' => '2021-02-14',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @return void
+     *
+     * @test
+     */
+    public function parseOlsnsDotCoDotUk()
+    {
+        $query = 'olsns.co.uk';
+
+        $fixture = $this->loadFixture($query);
+        $data    = [
+            "rawdata"  => $fixture,
+            "regyinfo" => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain'     => [
+                // 'name'    => 'olsns.co.uk',
+                'changed' => '2020-02-18',
+                'created' => '2001-02-21',
+                'expires' => '2021-02-21',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

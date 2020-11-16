@@ -30,6 +30,8 @@
  * @param string   $dateformat
  *
  * @return array
+ *
+ * @deprecated Use AbstractHandler::generic_parser_a
  */
 function generic_parser_a($rawdata, $translate, $contacts, $main = 'domain', $dateformat = 'dmy') {
     $blocks = generic_parser_a_blocks($rawdata, $translate, $disclaimer);
@@ -140,6 +142,17 @@ function generic_parser_a_blocks($rawdata, $translate, &$disclaimer) {
     return $blocks;
 }
 
+/**
+ * @param        $rawdata
+ * @param array  $items
+ * @param string $dateformat
+ * @param bool   $hasreg
+ * @param bool   $scanall
+ *
+ * @return array
+ *
+ * @deprecated Use AbstractHandler::generic_parser_b
+ */
 function generic_parser_b($rawdata, $items = array(), $dateformat = 'mdy', $hasreg = true, $scanall = false) {
     if (is_array($items) && !count($items))
         $items = array(
@@ -426,6 +439,8 @@ function assign(array $array, string $vDef, $value)
  * @param bool     $def_block
  *
  * @return array
+ *
+ * @deprecated Use AbstractHandler::get_blocks
  */
 function get_blocks($rawdata, $items, $partial_match = false, $def_block = false) {
 
@@ -537,6 +552,19 @@ function get_blocks($rawdata, $items, $partial_match = false, $def_block = false
     return $r;
 }
 
+/**
+ * @param       $data_str
+ * @param       $items
+ * @param       $date_format
+ * @param array $translate
+ * @param bool  $has_org
+ * @param bool  $partial_match
+ * @param bool  $def_block
+ *
+ * @return mixed
+ *
+ * @deprecated Use AbstractHandler::easy_parser
+ */
 function easy_parser($data_str, $items, $date_format, $translate = array(), $has_org = false, $partial_match = false, $def_block = false) {
     $r = get_blocks($data_str, $items, $partial_match, $def_block);
     $r = get_contacts($r, $translate, $has_org);
@@ -544,6 +572,15 @@ function easy_parser($data_str, $items, $date_format, $translate = array(), $has
     return $r;
 }
 
+/**
+ * @param       $array
+ * @param array $extra_items
+ * @param bool  $has_org
+ *
+ * @return mixed
+ *
+ * @deprecated Use AbstractHandler::get_contacts
+ */
 function get_contacts($array, $extra_items = array(), $has_org = false) {
     if (isset($array['billing']))
         $array['billing'] = get_contact($array['billing'], $extra_items, $has_org);
@@ -566,6 +603,15 @@ function get_contacts($array, $extra_items = array(), $has_org = false) {
     return $array;
 }
 
+/**
+ * @param       $array
+ * @param array $extra_items
+ * @param bool  $has_org
+ *
+ * @return array
+ *
+ * @deprecated Use AbstractHandler::get_contact
+ */
 function get_contact($array, $extra_items = array(), $has_org = false) {
 
     if (!is_array($array))
@@ -713,6 +759,14 @@ function get_contact($array, $extra_items = array(), $has_org = false) {
 
 //-------------------------------------------------------------------------
 
+/**
+ * @param        $res
+ * @param string $format
+ *
+ * @return array
+ *
+ * @deprecated Use AbstractHandler::format_dates
+ */
 function format_dates(&$res, $format = 'mdy') {
     if (!is_array($res))
         return $res;
@@ -739,8 +793,21 @@ function format_dates(&$res, $format = 'mdy') {
     return $res;
 }
 
+/**
+ * @param $date
+ * @param $format
+ *
+ * @return string|string[]
+ *
+ * @deprecated Use AbstractHandler::get_date
+ */
 function get_date($date, $format)
 {
+    $parsedDate = parseStandardDate($date);
+    if ($parsedDate instanceof DateTime) {
+        return $parsedDate->format('Y-m-d');
+    }
+
     $months = [
         'jan' => 1,
         'ene' => 1,
@@ -841,4 +908,75 @@ function get_date($date, $format)
         $res['y'] += 1900;
 
     return sprintf('%.4d-%02d-%02d', $res['y'], $res['m'], $res['d']);
+}
+
+/**
+ * @param string $date
+ *
+ * @return false|DateTime
+ */
+function parseStandardDate(string $date)
+{
+    $date = trim($date);
+
+    // 2020-01-01T00:00:00.0Z
+    $pattern = '/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}).\d(Z)$/';
+    if (preg_match($pattern, $date, $matches)) {
+        if (PHP_VERSION_ID >= 70300) {
+            // The `v` format character is broken before PHP 7.3
+            $dateTimeFormat = 'Y-m-d\TH:i:s.vT';
+            return Datetime::createFromFormat($dateTimeFormat, $date);
+        }
+
+        // For PHP < 7.3, skip the milliseconds
+        $date = $matches[1] . $matches[2];
+        // Intentional fall-through--this will match the next pattern
+    }
+
+    // 2020-01-01T00:00:00Z
+    $pattern = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/';
+    if (preg_match($pattern, $date)) {
+        $dateTimeFormat = 'Y-m-d\TH:i:sT';
+        return Datetime::createFromFormat($dateTimeFormat, $date);
+    }
+
+    // 2020-01-01T00:00:00
+    $pattern = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/';
+    if (preg_match($pattern, $date)) {
+        $dateTimeFormat = 'Y-m-d\TH:i:s';
+        $utc = new DateTimeZone('UTC');
+        return Datetime::createFromFormat($dateTimeFormat, $date, $utc);
+    }
+
+    // 2021-03-03T00:00:00-0800
+    $pattern = '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-+]\d{4}$/';
+    if (preg_match($pattern, $date)) {
+        $dateTimeFormat = 'Y-m-d\TH:i:sP';
+        return Datetime::createFromFormat($dateTimeFormat, $date);
+    }
+
+    // 27-Jul-2016
+    $pattern = '/^\d{2}-[a-zA-Z]{3}-\d{4}$/';
+    if (preg_match($pattern, $date)) {
+        $dateTimeFormat = 'd-M-Y';
+        $utc = new DateTimeZone('UTC');
+        return Datetime::createFromFormat($dateTimeFormat, $date, $utc);
+    }
+
+    // 2020-01-01 00:00:00 CLST
+    $pattern = '/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})(?: \w+)?$/';
+    if (preg_match($pattern, $date, $matches)) {
+        $dateTimeFormat = 'Y-m-d H:i:s T';
+
+        $parsedDate = DateTime::createFromFormat($dateTimeFormat, $date);
+        if ($parsedDate instanceof DateTime) {
+            return $parsedDate;
+        }
+
+        // More than likely the timezone could not be found, so ignore it
+        $dateTimeFormat = 'Y-m-d H:i:s';
+        return DateTime::createFromFormat($dateTimeFormat, $matches[1]);
+    }
+
+    return false;
 }
